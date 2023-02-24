@@ -1,0 +1,52 @@
+
+/* Create foundation for multiple columns */
+* {
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* Set font of page to Arial */
+body {
+	font-family: Arial;
+}
+
+/* Add class to center elements */
+.centered {
+	text-align: center;
+}
+
+/* Add class signifying whole extent of page */
+.maincont {
+	margin-left: 0px;
+	margin-right: 0px;
+	width: 100%;
+}
+
+/* Add classes signifying left, middle, and right columns, respectively */
+.lcol,
+.mcol,
+.rcol {
+	display: inline;
+	float: left;
+	position: relative;
+}
+
+.lcol {
+	width: calc(100% / 3);
+}
+
+.mcol {
+	width: calc(100% / 3);
+}
+
+.rcol {
+	width: calc(100% / 3);
+}
+
+/* Clear floats after the columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
