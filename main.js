@@ -101,25 +101,23 @@ d3.csv("data/iris.csv").then((data) => {
                       .range([VIS_HEIGHT, 0]);
 
     // Use X_SCALE2 and Y_SCALE2 to plot points
-  	FRAME2.selectAll("points")  
+  	FRAME2.selectAll("points") 
+  	let myPoints = FRAME2.append("g")
+  		.selectAll("points")
       	.data(data) // Passed from .then  
       	.enter()       
-      	.append("circle")
-      	  .attr("id", (d) => { return ("(" + d.Sepal_Width + ", " + d.Petal_Width + ")"); })
-      	  .attr("cx", (d) => { return (X_SCALE2(d.Sepal_Width) + MARGINS.left); }) 
-          .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); }) 
-          .attr("r", 5)
-          .attr("fill", (d) => { return COLOR(d.Species); })
-          .style("opacity", 0.5)
-         
-    FRAME2.call( d3.brush()
-           .extent( [ [0,0], [VIS_WIDTH, VIS_HEIGHT] ])
-           .on("start brush", updatePlot));
+	      	.append("circle")
+	      	  .attr("id", (d) => { return ("(" + d.Sepal_Width + ", " + d.Petal_Width + ")"); })
+	      	  .attr("cx", (d) => { return (X_SCALE2(d.Sepal_Width) + MARGINS.left); }) 
+	          .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); }) 
+	          .attr("r", 5)
+	          .attr("fill", (d) => { return COLOR(d.Species); })
+	          .style("opacity", 0.5);
 
 
 	function updatePlot() {
-		coords = d3.event.selection 
-		points.classed("selected", function(d){ return isBrushed(coords, x(d.Sepal_Length), y(d.Petal_Length))})
+		coords = d3.brushSelection(this)
+		myPoints.classed("selectedpt", function(d){ return isInBrush(coords, X_SCALE2(d.Sepal_Length), Y_SCALE2(d.Petal_Length))})
 	}
 
 	function isInBrush(coords, cx, cy) {
@@ -128,6 +126,10 @@ d3.csv("data/iris.csv").then((data) => {
 			   coords[0][1] <= cy &&
 			   coords[1][1] >= cy;
 			}
+
+	FRAME2.call( d3.brush()
+           .extent( [ [0,0], [FRAME_WIDTH, FRAME_HEIGHT] ])
+           .on("start brush", updatePlot));
 
 
     // Add an x-axis to the vis  
