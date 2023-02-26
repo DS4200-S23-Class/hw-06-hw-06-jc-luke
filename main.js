@@ -8,70 +8,6 @@ const FRAME_WIDTH = 500;
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
 
 const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom;
-const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right; 
-
-
-
-
-
-
-
-// barplot 
-
-// Create a frame for the bar plot
-const FRAME2 = d3.select("#barchart") 
-                  .append("svg") 
-                    .attr("height", FRAME_HEIGHT)   
-                    .attr("width", FRAME_WIDTH)
-                    .attr("class", "frame");
-
-
-// Read data and create a barplot, hard-coded for this data
-d3.csv("data/iris.csv").then((data) => { 
-
-	const ySCALE_REV = d3.scaleLinear() 
-	                   .domain([0, 50])  
-	                   .range([VIS_HEIGHT, 0]);
-
-
-	const xSCALE = d3.scaleBand()
-						.range([ 0, VIS_WIDTH ])
-						.domain(data.map(function(d) { return d.Species; }))
-						.padding(0.3);
-
-	const BAR_WIDTH = 60;
-
-	// Create the x-axis
-	FRAME2.append("g")
-		 .attr("transform", "translate(" + MARGINS.left + 
-		  "," + (VIS_HEIGHT+ MARGINS.bottom) + ")")
-		 .call(d3.axisBottom(xSCALE))
-		 .selectAll("text")
-		   .attr("font-size", '10px');
-
-	// Create the y-axis
-	FRAME2.append("g")
-	   .attr("transform", "translate(" + MARGINS.left + "," + MARGINS.top + ")") 
-		 .call(d3.axisLeft(ySCALE_REV))
-		 .selectAll("text")
-		   .attr("font-size", '10px');
-
-	// Create the bars and add event listeners
-
-	FRAME2.selectAll("bar")
-	  .data(data)
-	  .enter()
-	  .append("rect")
-	    .attr("x", function(d) { return xSCALE(d.Species) + MARGINS.left; })
-	    .attr("y", function(d) { return ySCALE_REV(50) + MARGINS.top; })
-	    .attr("width", BAR_WIDTH)
-	    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(50); })
-	});
-
-
-
-
-
 const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right;
 
 // Assign a color to each species
@@ -174,7 +110,25 @@ d3.csv("data/iris.csv").then((data) => {
           .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); }) 
           .attr("r", 5)
           .attr("fill", (d) => { return COLOR(d.Species); })
-          .style("opacity", 0.5);
+          .style("opacity", 0.5)
+         
+    FRAME2.call( d3.brush()
+           .extent( [ [0,0], [VIS_WIDTH, VIS_HEIGHT] ])
+           .on("start brush", updatePlot));
+
+
+	function updatePlot() {
+		coords = d3.event.selection 
+		points.classed("selected", function(d){ return isBrushed(coords, x(d.Sepal_Length), y(d.Petal_Length))})
+	}
+
+	function isInBrush(coords, cx, cy) {
+		return coords[0][0] <= cx &&
+			   coords[1][0] >= cx &&
+			   coords[0][1] <= cy &&
+			   coords[1][1] >= cy;
+			}
+
 
     // Add an x-axis to the vis  
   	FRAME2.append("g") 
@@ -191,3 +145,55 @@ d3.csv("data/iris.csv").then((data) => {
             .attr("font-size", '10px');
 
 });
+
+// barplot 
+
+// Create a frame for the bar plot
+const FRAME3 = d3.select("#barchart") 
+                  .append("svg") 
+                    .attr("height", FRAME_HEIGHT)   
+                    .attr("width", FRAME_WIDTH)
+                    .attr("class", "frame");
+
+
+// Read data and create a barplot, hard-coded for this data
+d3.csv("data/iris.csv").then((data) => { 
+
+	const ySCALE_REV = d3.scaleLinear() 
+	                   .domain([0, 50])  
+	                   .range([VIS_HEIGHT, 0]);
+
+
+	const xSCALE = d3.scaleBand()
+						.range([ 0, VIS_WIDTH ])
+						.domain(data.map(function(d) { return d.Species; }))
+						.padding(0.3);
+
+	const BAR_WIDTH = 60;
+
+	// Create the x-axis
+	FRAME3.append("g")
+		 .attr("transform", "translate(" + MARGINS.left + 
+		  "," + (VIS_HEIGHT+ MARGINS.bottom) + ")")
+		 .call(d3.axisBottom(xSCALE))
+		 .selectAll("text")
+		   .attr("font-size", '10px');
+
+	// Create the y-axis
+	FRAME3.append("g")
+	   .attr("transform", "translate(" + MARGINS.left + "," + MARGINS.top + ")") 
+		 .call(d3.axisLeft(ySCALE_REV))
+		 .selectAll("text")
+		   .attr("font-size", '10px');
+
+	// Create the bars 
+	FRAME3.selectAll("bar")
+	  .data(data)
+	  .enter()
+	  .append("rect")
+	    .attr("x", function(d) { return xSCALE(d.Species) + MARGINS.left; })
+	    .attr("y", function(d) { return ySCALE_REV(50) + MARGINS.top; })
+	    .attr("width", BAR_WIDTH)
+	    .attr("fill", (d) => { return COLOR(d.Species); })
+	    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(50); })
+	});
