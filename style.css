@@ -51,7 +51,7 @@ body {
 	clear: both;
 }
 
-.selectedpt {
+.selected {
 	opacity: 1 !important;
 	stroke: orange;
 	stroke-width: 1px;
