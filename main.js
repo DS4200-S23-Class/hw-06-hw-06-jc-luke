@@ -131,8 +131,7 @@ d3.csv("data/iris.csv").then((data) => {
 
 	FRAME2.call( d3.brush()
            .extent( [ [0,0], [FRAME_WIDTH, FRAME_HEIGHT] ])
-           .on("start brush", updatePlot));
-
+           .on("start brush", updatePlot))
       .data(data) // Passed from .then  
       .enter()       
 	    .append("circle")
