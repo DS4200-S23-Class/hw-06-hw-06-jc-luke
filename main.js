@@ -104,6 +104,59 @@ d3.csv("data/iris.csv").then((data) => {
   FRAME2.selectAll("points") 
   let myPoints = FRAME2.append("g")
   	.selectAll("points")
+<<<<<<< HEAD
+=======
+=======
+  	const MAX_X2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
+
+  	// Define scale functions that maps our data values 
+  	// (domain) to pixel values (range)
+  	const X_SCALE2 = d3.scaleLinear() 
+                      .domain([0, (MAX_X2 + 1)]) // Add some padding  
+                      .range([0, VIS_WIDTH]);
+
+    // Find max Y
+  	const MAX_Y2 = d3.max(data, (d) => { return parseInt(d.Petal_Width); });
+
+  	// Define scale functions that maps our data values 
+  	// (domain) to pixel values (range)
+  	const Y_SCALE2 = d3.scaleLinear() 
+                      .domain([0, (MAX_Y2 + 1)]) // Add some padding  
+                      .range([VIS_HEIGHT, 0]);
+
+    // Use X_SCALE2 and Y_SCALE2 to plot points
+  	FRAME2.selectAll("points") 
+  	let myPoints = FRAME2.append("g")
+  		.selectAll("points")
+      	.data(data) // Passed from .then  
+      	.enter()       
+	      	.append("circle")
+	      	  .attr("id", (d) => { return ("(" + d.Sepal_Width + ", " + d.Petal_Width + ")"); })
+	      	  .attr("cx", (d) => { return (X_SCALE2(d.Sepal_Width) + MARGINS.left); }) 
+	          .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); }) 
+	          .attr("r", 5)
+	          .attr("fill", (d) => { return COLOR(d.Species); })
+	          .style("opacity", 0.5);
+
+
+	function updatePlot(event) {
+		coords = event.selection
+		myPoints.classed("selectedpt", function(d){ return isInBrush(coords, X_SCALE2(d.Sepal_Width), Y_SCALE2(d.Petal_Width))})
+	}
+
+	// function isInBrush(coords, cx, cy) {
+	// 	let x0 = coords[0][0],
+	// 		x1 = coords[1][0],
+	// 		y0 = coords[0][1],
+	// 		y1 = coords[1][1]; 
+
+	// 	return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+	// 		}
+
+	FRAME2.call( d3.brush()
+           .extent( [ [0,0], [FRAME_WIDTH, FRAME_HEIGHT] ])
+           .on("start brush", updatePlot))
+>>>>>>> 4973b133dcd03eaa0365a6c791bc03207d3e9fc9
       .data(data) // Passed from .then  
       .enter()       
 	    .append("circle")
@@ -113,6 +166,51 @@ d3.csv("data/iris.csv").then((data) => {
 	      .attr("r", 5)
 	      .attr("fill", (d) => { return COLOR(d.Species); })
 	      .style("opacity", 0.5);
+<<<<<<< HEAD
+=======
+
+    // Add an x-axis to the vis  
+  	FRAME2.append("g") 
+          .attr("transform", "translate(" + MARGINS.left + 
+                "," + (VIS_HEIGHT + MARGINS.top) + ")") 
+          .call(d3.axisBottom(X_SCALE2).ticks(10)) 
+            .attr("font-size", '10px');
+
+    // Add a y-axis to the vis
+  	FRAME2.append("g") 
+          .attr("transform", "translate(" + MARGINS.top + 
+                "," + MARGINS.left + ")") 
+          .call(d3.axisLeft(Y_SCALE2).ticks(15)) 
+            .attr("font-size", '10px');
+
+    // Add brushing
+    FRAME2.call( d3.brush()
+            .extent( [ [0,0], [VIS_WIDTH,VIS_HEIGHT] ] )
+            .on("start brush", updateChart)
+          )
+
+    // Function that is triggered when brushing is performed
+    function updateChart(event) {
+      extent = event.selection
+      myPoints.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
+    }
+
+    // A function that returns TRUE or FALSE according if a dot is in the selection or not
+    function isBrushed(brush_coords, cx, cy) {
+         let x0 = brush_coords[0][0],
+             x1 = brush_coords[1][0],
+             y0 = brush_coords[0][1],
+             y1 = brush_coords[1][1]; 
+        return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+    }
+	      .append("circle")
+	      	 .attr("id", (d) => { return ("(" + d.Sepal_Width + ", " + d.Petal_Width + ")"); })
+	      	 .attr("cx", (d) => { return (X_SCALE2(d.Sepal_Width) + MARGINS.left); }) 
+	         .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); }) 
+	         .attr("r", 5)
+	         .attr("fill", (d) => { return COLOR(d.Species); })
+	         .style("opacity", 0.5)
+>>>>>>> 4973b133dcd03eaa0365a6c791bc03207d3e9fc9
 
   // Add an x-axis to the vis  
   FRAME2.append("g") 
@@ -133,21 +231,6 @@ d3.csv("data/iris.csv").then((data) => {
           .extent( [ [0,0], [VIS_WIDTH,VIS_HEIGHT] ] )
           .on("start brush", updateChart)
         )
-
-  // Function that is triggered when brushing is performed
-  function updateChart(event) {
-    extent = event.selection
-    myPoints.classed("selected", function(d){ return isBrushed(extent, X_SCALE2(d.Sepal_Width), Y_SCALE2(d.Petal_Width) ) } )
-  }
-
-  // A function that returns TRUE or FALSE according if a dot is in the selection or not
-  function isBrushed(brush_coords, cx, cy) {
-        let x0 = brush_coords[0][0],
-            x1 = brush_coords[1][0],
-            y0 = brush_coords[0][1],
-            y1 = brush_coords[1][1]; 
-      return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
-  }
 
 })
 
