@@ -23,7 +23,8 @@ const FRAME1 = d3.select("#length-scatter")
                     .attr("class", "frame");
 
 // Read data and create the scatter plot
-d3.csv("data/iris.csv").then((data) => {
+d3.csv("data/iris.csv").then((data) => { 
+
 
 	// Find max X
   const MAX_X1 = d3.max(data, (d) => { return parseInt(d.Sepal_Length); });
@@ -44,7 +45,9 @@ d3.csv("data/iris.csv").then((data) => {
                     .range([VIS_HEIGHT, 0]);
 
   // Use X_SCALE1 and Y_SCALE1 to plot points
-  FRAME1.selectAll("points")  
+   FRAME1.selectAll("points") 
+  let myPoints1 = FRAME1.append("g")
+  		.selectAll("points")  
       .data(data) // Passed from .then  
       .enter()       
       .append("circle")
@@ -55,6 +58,7 @@ d3.csv("data/iris.csv").then((data) => {
          .attr("fill", (d) => { return COLOR(d.Species); })
          .style("opacity", 0.5);
 
+console.log("hey")
   // Add an x-axis to the vis  
   FRAME1.append("g") 
         .attr("transform", "translate(" + MARGINS.left + 
@@ -69,8 +73,6 @@ d3.csv("data/iris.csv").then((data) => {
         .call(d3.axisLeft(Y_SCALE1).ticks(14)) 
           .attr("font-size", '10px');
 
-});
-
 
 // Create a frame for the first scatter plot
 const FRAME2 = d3.select("#width-scatter")
@@ -80,7 +82,6 @@ const FRAME2 = d3.select("#width-scatter")
                     .attr("class", "frame");
 
 // Read data and create the scatter plot
-d3.csv("data/iris.csv").then((data) => {
 
 	// Find max X
   const MAX_X2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
@@ -138,6 +139,8 @@ d3.csv("data/iris.csv").then((data) => {
   function updateChart(event) {
     extent = event.selection
     myPoints.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
+    myPoints1.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
+    myBars.classed("selectedBar", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
   }
 
   // A function that returns TRUE or FALSE according if a dot is in the selection or not
@@ -149,7 +152,6 @@ d3.csv("data/iris.csv").then((data) => {
     return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
   }
 
-})
 
 // barplot 
 
@@ -162,7 +164,6 @@ const FRAME3 = d3.select("#barchart")
 
 
 // Read data and create a barplot, hard-coded for this data
-d3.csv("data/iris.csv").then((data) => { 
 
 	const ySCALE_REV = d3.scaleLinear() 
 	                   .domain([0, 50])  
@@ -192,7 +193,8 @@ d3.csv("data/iris.csv").then((data) => {
 		   .attr("font-size", '10px');
 
 	// Create the bars 
-	FRAME3.selectAll("bar")
+	let myBars = FRAME3.append('g')
+	.selectAll("bar")
 	  .data(data)
 	  .enter()
 	  .append("rect")
@@ -201,4 +203,5 @@ d3.csv("data/iris.csv").then((data) => {
 	    .attr("width", BAR_WIDTH)
 	    .attr("fill", (d) => { return COLOR(d.Species); })
 	    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(50); })
+
 	});
