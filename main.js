@@ -131,7 +131,7 @@ const FRAME2 = d3.select("#width-scatter")
 
   // Add brushing
   FRAME2.call( d3.brush()
-          .extent( [ [0,0], [VIS_WIDTH,VIS_HEIGHT] ] )
+          .extent( [ [0,0], [FRAME_WIDTH,FRAME_HEIGHT] ] )
           .on("start brush", updateChart)
         )
 
@@ -140,7 +140,7 @@ const FRAME2 = d3.select("#width-scatter")
     extent = event.selection
     myPoints.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
     myPoints1.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
-    myBars.classed("selectedBar", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
+    myBars.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
   }
 
   // A function that returns TRUE or FALSE according if a dot is in the selection or not

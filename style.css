@@ -54,11 +54,5 @@ body {
 .selected {
 	opacity: 1 !important;
 	stroke: orange;
-	stroke-width: 2px;
-}
-
-.selectedBar {
-	outline: solid;
-	stroke: black;
-	stroke-width: 2px;
+	stroke-width: 3px;
 }
