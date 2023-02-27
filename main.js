@@ -1,6 +1,6 @@
 // JS File for Homework 6: D3 Brushing & Linking
 // Luke Abbatessa and Jocelyn Ju
-// Last Modified 02.26.2023
+// Last Modified 02.27.2023
 
 // Instantiate visualization dimensions/limitations
 const FRAME_HEIGHT = 500;
@@ -25,6 +25,8 @@ const FRAME1 = d3.select("#length-scatter")
 // Read data and create the scatter plot
 d3.csv("data/iris.csv").then((data) => { 
 
+
+  /*-------------------------------- SCATTER PLOT 1 --------------------------------*/
 
 	// Find max X
   const MAX_X1 = d3.max(data, (d) => { return parseInt(d.Sepal_Length); });
@@ -58,7 +60,6 @@ d3.csv("data/iris.csv").then((data) => {
          .attr("fill", (d) => { return COLOR(d.Species); })
          .style("opacity", 0.5);
 
-console.log("hey")
   // Add an x-axis to the vis  
   FRAME1.append("g") 
         .attr("transform", "translate(" + MARGINS.left + 
@@ -74,14 +75,16 @@ console.log("hey")
           .attr("font-size", '10px');
 
 
-// Create a frame for the first scatter plot
-const FRAME2 = d3.select("#width-scatter")
+ /*-------------------------------- SCATTER PLOT 2 --------------------------------*/
+
+  // Create a frame for the second scatter plot
+  const FRAME2 = d3.select("#width-scatter")
                   .append("svg")
                     .attr("height", FRAME_HEIGHT)
                     .attr("width", FRAME_WIDTH)
                     .attr("class", "frame");
 
-// Read data and create the scatter plot
+  // Read data and create the scatter plot
 
 	// Find max X
   const MAX_X2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
@@ -131,16 +134,18 @@ const FRAME2 = d3.select("#width-scatter")
 
   // Add brushing
   FRAME2.call( d3.brush()
-          .extent( [ [0,0], [VIS_WIDTH,VIS_HEIGHT] ] )
+          .extent( [ [0,0], [FRAME_WIDTH,FRAME_HEIGHT] ] )
           .on("start brush", updateChart)
         )
 
   // Function that is triggered when brushing is performed
   function updateChart(event) {
     extent = event.selection
+
+    // link the charts to react according to the brush event
     myPoints.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
     myPoints1.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
-    myBars.classed("selectedBar", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
+    myBars.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
   }
 
   // A function that returns TRUE or FALSE according if a dot is in the selection or not
@@ -152,29 +157,29 @@ const FRAME2 = d3.select("#width-scatter")
     return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
   }
 
-
-// barplot 
-
-// Create a frame for the bar plot
-const FRAME3 = d3.select("#barchart") 
+  /*-------------------------------- BARPLOT --------------------------------*/
+  // Create a frame for the bar plot
+  const FRAME3 = d3.select("#barchart") 
                   .append("svg") 
                     .attr("height", FRAME_HEIGHT)   
                     .attr("width", FRAME_WIDTH)
                     .attr("class", "frame");
 
 
-// Read data and create a barplot, hard-coded for this data
+  // Read data and create a barplot, hard-coded for this data
 
+  // create the y scale
 	const ySCALE_REV = d3.scaleLinear() 
 	                   .domain([0, 50])  
 	                   .range([VIS_HEIGHT, 0]);
 
-
+	// create the x scale
 	const xSCALE = d3.scaleBand()
 						.range([ 0, VIS_WIDTH ])
 						.domain(data.map(function(d) { return d.Species; }))
 						.padding(0.3);
 
+  // set the bar width
 	const BAR_WIDTH = 60;
 
 	// Create the x-axis

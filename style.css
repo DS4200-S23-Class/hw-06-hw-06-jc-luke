@@ -51,6 +51,7 @@ body {
 	clear: both;
 }
 
+/* create a class for selected point */
 .selected {
 	opacity: 1 !important;
 	stroke: orange;
