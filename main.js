@@ -115,8 +115,8 @@ d3.csv("data/iris.csv").then((data) => {
 	          .style("opacity", 0.5);
 
 
-	function updatePlot() {
-		coords = d3.event.selection
+	function updatePlot(event) {
+		coords = event.selection
 		myPoints.classed("selectedpt", function(d){ return isInBrush(coords, X_SCALE2(d.Sepal_Width), Y_SCALE2(d.Petal_Width))})
 	}
 
