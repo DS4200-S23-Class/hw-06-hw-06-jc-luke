@@ -26,48 +26,48 @@ const FRAME1 = d3.select("#length-scatter")
 d3.csv("data/iris.csv").then((data) => {
 
 	// Find max X
-  	const MAX_X1 = d3.max(data, (d) => { return parseInt(d.Sepal_Length); });
+  const MAX_X1 = d3.max(data, (d) => { return parseInt(d.Sepal_Length); });
 
-  	// Define scale functions that maps our data values 
-  	// (domain) to pixel values (range)
-  	const X_SCALE1 = d3.scaleLinear() 
-                      .domain([0, (MAX_X1 + 1)]) // Add some padding  
-                      .range([0, VIS_WIDTH]);
+  // Define scale functions that maps our data values 
+  // (domain) to pixel values (range)
+  const X_SCALE1 = d3.scaleLinear() 
+                    .domain([0, (MAX_X1 + 1)]) // Add some padding  
+                    .range([0, VIS_WIDTH]);
 
-    // Find max Y
-  	const MAX_Y1 = d3.max(data, (d) => { return parseInt(d.Petal_Length); });
+  // Find max Y
+  const MAX_Y1 = d3.max(data, (d) => { return parseInt(d.Petal_Length); });
 
-  	// Define scale functions that maps our data values 
-  	// (domain) to pixel values (range)
-  	const Y_SCALE1 = d3.scaleLinear() 
-                      .domain([0, (MAX_Y1 + 1)]) // Add some padding  
-                      .range([VIS_HEIGHT, 0]);
+  // Define scale functions that maps our data values 
+  // (domain) to pixel values (range)
+  const Y_SCALE1 = d3.scaleLinear() 
+                    .domain([0, (MAX_Y1 + 1)]) // Add some padding  
+                    .range([VIS_HEIGHT, 0]);
 
-    // Use X_SCALE1 and Y_SCALE1 to plot points
-  	FRAME1.selectAll("points")  
-      	.data(data) // Passed from .then  
-      	.enter()       
-      	.append("circle")
-      	  .attr("id", (d) => { return ("(" + d.Sepal_Length + ", " + d.Petal_Length + ")"); })
-      	  .attr("cx", (d) => { return (X_SCALE1(d.Sepal_Length) + MARGINS.left); }) 
-          .attr("cy", (d) => { return (Y_SCALE1(d.Petal_Length) + MARGINS.top); }) 
-          .attr("r", 5)
-          .attr("fill", (d) => { return COLOR(d.Species); })
-          .style("opacity", 0.5);
+  // Use X_SCALE1 and Y_SCALE1 to plot points
+  FRAME1.selectAll("points")  
+      .data(data) // Passed from .then  
+      .enter()       
+      .append("circle")
+      	 .attr("id", (d) => { return ("(" + d.Sepal_Length + ", " + d.Petal_Length + ")"); })
+      	 .attr("cx", (d) => { return (X_SCALE1(d.Sepal_Length) + MARGINS.left); }) 
+         .attr("cy", (d) => { return (Y_SCALE1(d.Petal_Length) + MARGINS.top); }) 
+         .attr("r", 5)
+         .attr("fill", (d) => { return COLOR(d.Species); })
+         .style("opacity", 0.5);
 
-    // Add an x-axis to the vis  
-  	FRAME1.append("g") 
-          .attr("transform", "translate(" + MARGINS.left + 
-                "," + (VIS_HEIGHT + MARGINS.top) + ")") 
-          .call(d3.axisBottom(X_SCALE1).ticks(8)) 
-            .attr("font-size", '10px');
+  // Add an x-axis to the vis  
+  FRAME1.append("g") 
+        .attr("transform", "translate(" + MARGINS.left + 
+              "," + (VIS_HEIGHT + MARGINS.top) + ")") 
+        .call(d3.axisBottom(X_SCALE1).ticks(8)) 
+          .attr("font-size", '10px');
 
-    // Add a y-axis to the vis
-  	FRAME1.append("g") 
-          .attr("transform", "translate(" + MARGINS.top + 
-                "," + MARGINS.left + ")") 
-          .call(d3.axisLeft(Y_SCALE1).ticks(14)) 
-            .attr("font-size", '10px');
+  // Add a y-axis to the vis
+  FRAME1.append("g") 
+        .attr("transform", "translate(" + MARGINS.top + 
+              "," + MARGINS.left + ")") 
+        .call(d3.axisLeft(Y_SCALE1).ticks(14)) 
+          .attr("font-size", '10px');
 
 });
 
@@ -83,6 +83,29 @@ const FRAME2 = d3.select("#width-scatter")
 d3.csv("data/iris.csv").then((data) => {
 
 	// Find max X
+<<<<<<< HEAD
+  const MAX_X2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
+
+  // Define scale functions that maps our data values 
+  // (domain) to pixel values (range)
+  const X_SCALE2 = d3.scaleLinear() 
+                    .domain([0, (MAX_X2 + 1)]) // Add some padding  
+                    .range([0, VIS_WIDTH]);
+
+  // Find max Y
+  const MAX_Y2 = d3.max(data, (d) => { return parseInt(d.Petal_Width); });
+
+  // Define scale functions that maps our data values 
+  // (domain) to pixel values (range)
+  const Y_SCALE2 = d3.scaleLinear() 
+                    .domain([0, (MAX_Y2 + 1)]) // Add some padding  
+                    .range([VIS_HEIGHT, 0]);
+
+  // Use X_SCALE2 and Y_SCALE2 to plot points
+  FRAME2.selectAll("points") 
+  let myPoints = FRAME2.append("g")
+  	.selectAll("points")
+=======
   	const MAX_X2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
 
   	// Define scale functions that maps our data values 
@@ -176,6 +199,33 @@ d3.csv("data/iris.csv").then((data) => {
              y1 = brush_coords[1][1]; 
         return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
     }
+	      .append("circle")
+	      	 .attr("id", (d) => { return ("(" + d.Sepal_Width + ", " + d.Petal_Width + ")"); })
+	      	 .attr("cx", (d) => { return (X_SCALE2(d.Sepal_Width) + MARGINS.left); }) 
+	         .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); }) 
+	         .attr("r", 5)
+	         .attr("fill", (d) => { return COLOR(d.Species); })
+	         .style("opacity", 0.5)
+
+  // Add an x-axis to the vis  
+  FRAME2.append("g") 
+        .attr("transform", "translate(" + MARGINS.left + 
+              "," + (VIS_HEIGHT + MARGINS.top) + ")") 
+        .call(d3.axisBottom(X_SCALE2).ticks(10)) 
+          .attr("font-size", '10px');
+
+  // Add a y-axis to the vis
+  FRAME2.append("g") 
+        .attr("transform", "translate(" + MARGINS.top + 
+              "," + MARGINS.left + ")") 
+        .call(d3.axisLeft(Y_SCALE2).ticks(15)) 
+          .attr("font-size", '10px');
+
+	// Add brushing
+  FRAME2.call( d3.brush()
+          .extent( [ [0,0], [VIS_WIDTH,VIS_HEIGHT] ] )
+          .on("start brush", updateChart)
+        )
 
 })
 
