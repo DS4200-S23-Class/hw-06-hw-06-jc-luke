@@ -120,14 +120,14 @@ d3.csv("data/iris.csv").then((data) => {
 		myPoints.classed("selectedpt", function(d){ return isInBrush(coords, X_SCALE2(d.Sepal_Width), Y_SCALE2(d.Petal_Width))})
 	}
 
-	function isInBrush(coords, cx, cy) {
-		let x0 = coords[0][0],
-			x1 = coords[1][0],
-			y0 = coords[0][1],
-			y1 = coords[1][1]; 
+	// function isInBrush(coords, cx, cy) {
+	// 	let x0 = coords[0][0],
+	// 		x1 = coords[1][0],
+	// 		y0 = coords[0][1],
+	// 		y1 = coords[1][1]; 
 
-		return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
-			}
+	// 	return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+	// 		}
 
 	FRAME2.call( d3.brush()
            .extent( [ [0,0], [FRAME_WIDTH, FRAME_HEIGHT] ])
@@ -165,7 +165,7 @@ d3.csv("data/iris.csv").then((data) => {
     // Function that is triggered when brushing is performed
     function updateChart(event) {
       extent = event.selection
-      myPoints.classed("selected", function(d){ return isBrushed(extent, X_SCALE2(d.Sepal_Width), Y_SCALE2(d.Petal_Width) ) } )
+      myPoints.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
     }
 
     // A function that returns TRUE or FALSE according if a dot is in the selection or not
