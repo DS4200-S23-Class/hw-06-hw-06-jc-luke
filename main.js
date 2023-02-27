@@ -116,15 +116,23 @@ d3.csv("data/iris.csv").then((data) => {
 
 
 	function updatePlot() {
-		coords = d3.brushSelection(this)
-		myPoints.classed("selectedpt", function(d){ return isInBrush(coords, X_SCALE2(d.Sepal_Length), Y_SCALE2(d.Petal_Length))})
+		coords = d3.event.selection
+		myPoints.classed("selectedpt", function(d){ return isInBrush(coords, X_SCALE2(d.Sepal_Width), Y_SCALE2(d.Petal_Width))})
 	}
 
 	function isInBrush(coords, cx, cy) {
-		return coords[0][0] <= cx &&
-			   coords[1][0] >= cx &&
-			   coords[0][1] <= cy &&
-			   coords[1][1] >= cy;
+		let x0 = coords[0][0],
+			x1 = coords[1][0],
+			y0 = coords[0][1],
+			y1 = coords[1][1]; 
+
+		return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+
+		// return coords[0][0] <= cx &&
+		// 	   coords[1][0] >= cx &&
+		// 	   coords[0][1] <= cy &&
+		// 	   coords[1][1] >= cy;
+
 			}
 
 	FRAME2.call( d3.brush()
