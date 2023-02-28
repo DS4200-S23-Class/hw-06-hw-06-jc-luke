@@ -1,6 +1,6 @@
 // JS File for Homework 6: D3 Brushing & Linking
 // Luke Abbatessa and Jocelyn Ju
-// Last Modified 02.27.2023
+// Last Modified 02.28.2023
 
 // Instantiate visualization dimensions/limitations
 const FRAME_HEIGHT = 500;
@@ -22,7 +22,7 @@ const FRAME1 = d3.select("#length-scatter")
                     .attr("width", FRAME_WIDTH)
                     .attr("class", "frame");
 
-// Read data and create the scatter plot
+// Read in the data
 d3.csv("data/iris.csv").then((data) => { 
 
 
@@ -47,7 +47,7 @@ d3.csv("data/iris.csv").then((data) => {
                     .range([VIS_HEIGHT, 0]);
 
   // Use X_SCALE1 and Y_SCALE1 to plot points
-   FRAME1.selectAll("points") 
+  FRAME1.selectAll("points") 
   let myPoints1 = FRAME1.append("g")
   		.selectAll("points")  
       .data(data) // Passed from .then  
@@ -65,14 +65,14 @@ d3.csv("data/iris.csv").then((data) => {
         .attr("transform", "translate(" + MARGINS.left + 
               "," + (VIS_HEIGHT + MARGINS.top) + ")") 
         .call(d3.axisBottom(X_SCALE1).ticks(8)) 
-          .attr("font-size", '10px');
+          .attr("font-size", "10px");
 
   // Add a y-axis to the vis
   FRAME1.append("g") 
         .attr("transform", "translate(" + MARGINS.top + 
               "," + MARGINS.left + ")") 
         .call(d3.axisLeft(Y_SCALE1).ticks(14)) 
-          .attr("font-size", '10px');
+          .attr("font-size", "10px");
 
 
  /*-------------------------------- SCATTER PLOT 2 --------------------------------*/
@@ -84,9 +84,7 @@ d3.csv("data/iris.csv").then((data) => {
                     .attr("width", FRAME_WIDTH)
                     .attr("class", "frame");
 
-  // Read data and create the scatter plot
-
-	// Find max X
+  // Find max X
   const MAX_X2 = d3.max(data, (d) => { return parseInt(d.Sepal_Width); });
 
   // Define scale functions that maps our data values 
@@ -123,29 +121,29 @@ d3.csv("data/iris.csv").then((data) => {
         .attr("transform", "translate(" + MARGINS.left + 
               "," + (VIS_HEIGHT + MARGINS.top) + ")") 
         .call(d3.axisBottom(X_SCALE2).ticks(10)) 
-          .attr("font-size", '10px');
+          .attr("font-size", "10px");
 
   // Add a y-axis to the vis
   FRAME2.append("g") 
         .attr("transform", "translate(" + MARGINS.top + 
               "," + MARGINS.left + ")") 
         .call(d3.axisLeft(Y_SCALE2).ticks(15)) 
-          .attr("font-size", '10px');
+          .attr("font-size", "10px");
 
   // Add brushing
   FRAME2.call( d3.brush()
           .extent( [ [0,0], [FRAME_WIDTH,FRAME_HEIGHT] ] )
           .on("start brush", updateChart)
-        )
+        );
 
   // Function that is triggered when brushing is performed
   function updateChart(event) {
-    extent = event.selection
+    extent = event.selection;
 
-    // link the charts to react according to the brush event
-    myPoints.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
-    myPoints1.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
-    myBars.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } )
+    // Link the charts to react according to the brush event
+    myPoints.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } );
+    myPoints1.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } );
+    myBars.classed("selected", function(d){ return isBrushed(extent, (X_SCALE2(d.Sepal_Width) + MARGINS.left), (Y_SCALE2(d.Petal_Width) + MARGINS.top) ) } );
   }
 
   // A function that returns TRUE or FALSE according if a dot is in the selection or not
@@ -157,7 +155,7 @@ d3.csv("data/iris.csv").then((data) => {
     return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
   }
 
-  /*-------------------------------- BARPLOT --------------------------------*/
+  /*-------------------------------- BAR PLOT --------------------------------*/
   // Create a frame for the bar plot
   const FRAME3 = d3.select("#barchart") 
                   .append("svg") 
@@ -166,20 +164,18 @@ d3.csv("data/iris.csv").then((data) => {
                     .attr("class", "frame");
 
 
-  // Read data and create a barplot, hard-coded for this data
-
-  // create the y scale
+  // Create the y scale
 	const ySCALE_REV = d3.scaleLinear() 
 	                   .domain([0, 50])  
 	                   .range([VIS_HEIGHT, 0]);
 
-	// create the x scale
+	// Create the x scale
 	const xSCALE = d3.scaleBand()
 						.range([ 0, VIS_WIDTH ])
 						.domain(data.map(function(d) { return d.Species; }))
 						.padding(0.3);
 
-  // set the bar width
+  // Set the bar width
 	const BAR_WIDTH = 60;
 
 	// Create the x-axis
@@ -188,17 +184,18 @@ d3.csv("data/iris.csv").then((data) => {
 		  "," + (VIS_HEIGHT+ MARGINS.bottom) + ")")
 		 .call(d3.axisBottom(xSCALE))
 		 .selectAll("text")
-		   .attr("font-size", '10px');
+		   .attr("font-size", "10px");
 
 	// Create the y-axis
 	FRAME3.append("g")
 	   .attr("transform", "translate(" + MARGINS.left + "," + MARGINS.top + ")") 
 		 .call(d3.axisLeft(ySCALE_REV))
 		 .selectAll("text")
-		   .attr("font-size", '10px');
+		   .attr("font-size", "10px");
 
 	// Create the bars 
-	let myBars = FRAME3.append('g')
+	FRAME3.selectAll("bar")
+  let myBars = FRAME3.append("g")
 	.selectAll("bar")
 	  .data(data)
 	  .enter()
@@ -206,7 +203,8 @@ d3.csv("data/iris.csv").then((data) => {
 	    .attr("x", function(d) { return xSCALE(d.Species) + MARGINS.left; })
 	    .attr("y", function(d) { return ySCALE_REV(50) + MARGINS.top; })
 	    .attr("width", BAR_WIDTH)
+      .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(50); })
 	    .attr("fill", (d) => { return COLOR(d.Species); })
-	    .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(50); })
+      .style("opacity", 0.5);
 
 	});
