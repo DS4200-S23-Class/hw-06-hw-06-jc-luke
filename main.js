@@ -204,7 +204,6 @@ d3.csv("data/iris.csv").then((data) => {
 	    .attr("y", function(d) { return ySCALE_REV(50) + MARGINS.top; })
 	    .attr("width", BAR_WIDTH)
       .attr("height", function(d) { return VIS_HEIGHT - ySCALE_REV(50); })
-	    .attr("fill", (d) => { return COLOR(d.Species); })
-      .style("opacity", 0.5);
+	    .attr("fill", (d) => { return COLOR(d.Species); });
 
 	});
