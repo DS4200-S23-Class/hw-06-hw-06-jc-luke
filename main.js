@@ -58,7 +58,7 @@ d3.csv("data/iris.csv").then((data) => {
          .attr("cy", (d) => { return (Y_SCALE1(d.Petal_Length) + MARGINS.top); }) 
          .attr("r", 5)
          .attr("fill", (d) => { return COLOR(d.Species); })
-         .style("opacity", 0.5);
+         .attr("class", "point");
 
   // Add an x-axis to the vis  
   FRAME1.append("g") 
@@ -114,7 +114,7 @@ d3.csv("data/iris.csv").then((data) => {
 	      .attr("cy", (d) => { return (Y_SCALE2(d.Petal_Width) + MARGINS.top); }) 
 	      .attr("r", 5)
 	      .attr("fill", (d) => { return COLOR(d.Species); })
-	      .style("opacity", 0.5);
+	      .attr("class", "point");
 
   // Add an x-axis to the vis  
   FRAME2.append("g") 

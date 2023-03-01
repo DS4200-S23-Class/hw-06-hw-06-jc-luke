@@ -51,6 +51,11 @@ body {
 	clear: both;
 }
 
+/* create a class for points */
+.point {
+	opacity: 0.5;
+}
+
 /* Create a class for selected point */
 .selected {
 	opacity: 1 !important;
