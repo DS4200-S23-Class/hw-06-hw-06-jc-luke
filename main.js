@@ -1,6 +1,6 @@
 // JS File for Homework 6: D3 Brushing & Linking
 // Luke Abbatessa and Jocelyn Ju
-// Last Modified 02.28.2023
+// Last Modified 03.01.2023
 
 // Instantiate visualization dimensions/limitations
 const FRAME_HEIGHT = 500;
